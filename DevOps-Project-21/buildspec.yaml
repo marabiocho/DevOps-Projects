@@ -23,14 +23,14 @@ phases:
   
   build:
     commands:
-      - cd DevOps-Project-21 || exit 1
+      
       - docker build . -t kantin10/netflix-react-app:latest --build-arg TMDB_V3_API_KEY=$KEY
   
   post_build:
     commands:
       - echo "Build completed, logging into DockerHub..."
       - docker login -u $USERNAME -p $PASSWORD
-      - docker push dhruvdarji123/netflix-react-app:latest
+      - docker push kantin10/netflix-react-app:latest
 
 artifacts:
   files:
