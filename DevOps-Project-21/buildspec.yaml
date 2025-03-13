@@ -4,32 +4,37 @@ env:
   parameter-store:
     USERNAME: /myapp/docker-credentials/username
     PASSWORD: /myapp/docker-credentials/password
-    KEY:  /myapp/api/key
+    KEY: /myapp/api/key
 
-        
 phases:
   install:
     runtime-versions:
       nodejs: latest
     commands:
       - node --version
-      - echo "installed node "
-    # steps:
+      - echo "Installed Node.js"
+  
   pre_build:
     commands:
+      - cd DevOps-Project-21 || exit 1
+      - ls -lah  # Debugging step to verify files exist
       - npm install
-      - echo "dependencies installed"
+      - echo "Dependencies installed"
+  
   build:
     commands:
-      - docker build . -t dhruvdarji123/netflix-react-app:latest --build-arg TMDB_V3_API_KEY=$KEY
+      - cd DevOps-Project-21 || exit 1
+      - docker build . -t kantin10/netflix-react-app:latest --build-arg TMDB_V3_API_KEY=$KEY
+  
   post_build:
     commands:
-      - echo "waiting right now"
+      - echo "Build completed, logging into DockerHub..."
       - docker login -u $USERNAME -p $PASSWORD
       - docker push dhruvdarji123/netflix-react-app:latest
+
 artifacts:
   files:
     - '**/*'
-  base-directory: "./"
+  base-directory: "./DevOps-Project-21"
   name: build-artifact-name
   discard-paths: no
